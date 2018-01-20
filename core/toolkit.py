@@ -10,6 +10,7 @@ import gtk
 from core import crypto
 
 
+
 def cat(file_path):
     if os.path.isfile(file_path):
         try:
@@ -117,3 +118,10 @@ def sendfile(conn, dhkey):
         return 'File {} downloaded.'.format("ok")
     except IOError:
         return 'Error: Permission denied.'
+
+
+
+
+
+
+

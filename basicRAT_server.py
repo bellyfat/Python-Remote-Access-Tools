@@ -18,7 +18,7 @@ BANNER = '''
     (o o)       ([o o])      /(o o)\    
 ooO--(_)--OooooO--(_)--OooooO--(_)--Ooo-
 '''
-CLIENT_COMMANDS = ['execute', 'ls', 'scan', 'upload', 'download']
+CLIENT_COMMANDS = ['execute', 'ls','scan']
 HELP_TEXT = '''Command             | Description
 ---------------------------------------------------------------------------
 client <id>         | Connect to a client.
@@ -29,9 +29,9 @@ kill                | Kill the client connection.
 ls                  | List files in the current directory.
 quit                | Exit the server and keep all clients alive.
 screenshot          | Take a screenshot.
+scan <ip>           | Scan top 25 TCP ports on a single host.
 upload              | Upload file to a client.
 download            | Download file from a client
-sniff
 '''
 
 

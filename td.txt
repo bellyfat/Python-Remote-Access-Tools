@@ -1,4 +1,0 @@
-hello from client to server
-test
-test
-
