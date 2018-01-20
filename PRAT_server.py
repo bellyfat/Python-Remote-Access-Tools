@@ -71,7 +71,7 @@ class Server(threading.Thread):
     def recv_schot(self, client):
         imgFile = open('screenshot_server.png', 'w')
         try:
-            recv_data = client.conn.recv(40960000)
+            recv_data = client.conn.recv(4096)
             imgData = decrypt(recv_data, client.dhkey)
             imgFile.write(imgData)
 
