@@ -6,10 +6,12 @@ import socket
 import sys
 import time
 
-from libr import *
+from libr import crypto
+from libr import toolkit
+from libr import scan
 
 # change host you need
-HOST = 'localhost'
+HOST = '10.211.55.37'
 PORT = 1337
 
 # seconds to wait b
