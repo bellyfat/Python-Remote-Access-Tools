@@ -1,7 +1,4 @@
-#
-# basicRAT scan module
-# https://github.com/vesche/basicRAT
-#
+
 
 import socket
 

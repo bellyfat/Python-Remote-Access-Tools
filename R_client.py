@@ -6,7 +6,7 @@ import socket
 import sys
 import time
 
-from core import *
+from libr import *
 
 # change host you need
 HOST = 'localhost'

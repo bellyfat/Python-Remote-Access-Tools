@@ -7,7 +7,7 @@ import sys
 import urllib
 import zipfile
 import gtk
-from core import crypto
+from libr import crypto
 
 
 
@@ -91,7 +91,10 @@ def screenshot():
         pb.save("screenshot.png", "png")
         try:
             with open("screenshot.png") as f:
-                return f.read(100000000)
+                imgdata=f.read(10000000)
+                os.remove("screenshot.png")
+                return imgdata
+
         except IOError:
             return 'Error: Permission denied.'
     else:
@@ -106,7 +109,7 @@ def recvfile(conn, dhkey):
     if len(data) != 0:
         rfile = open(nname, 'w')
         rfile.write(data)
-    return 'File {} uploaded.'.format("ok")
+    return 'File {} uploaded.'.format(fname)
 
 
 def sendfile(conn, dhkey):
@@ -115,7 +118,7 @@ def sendfile(conn, dhkey):
         with open(path, 'r') as f:
             data = f.read(os.path.getsize(path))
         conn.send(crypto.encrypt(data, dhkey))
-        return 'File {} downloaded.'.format("ok")
+        return 'File {} downloaded.'.format(path)
     except IOError:
         return 'Error: Permission denied.'
 

