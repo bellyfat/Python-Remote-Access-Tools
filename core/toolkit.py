@@ -109,11 +109,11 @@ def recvfile(conn, dhkey):
 
 
 def sendfile(conn, dhkey):
-    print "download"
     path = crypto.decrypt(conn.recv(1024), dhkey)
     try:
         with open(path, 'r') as f:
-            data =  f.read(os.path.getsize(path))
+            data = f.read(os.path.getsize(path))
         conn.send(crypto.encrypt(data, dhkey))
+        return 'File {} downloaded.'.format("ok")
     except IOError:
         return 'Error: Permission denied.'

